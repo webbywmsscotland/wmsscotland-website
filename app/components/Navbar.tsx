@@ -1,21 +1,46 @@
+import Image from "next/image";
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-cyan-500/20 bg-[#0b1220]/95 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <div>
-          <h1 className="text-2xl font-black text-white">
-            WMS <span className="text-cyan-400">Scotland</span>
-          </h1>
-          <p className="text-xs text-gray-400">
-            Mobile Mechanic • East Lothian
-          </p>
-        </div>
+
+        <a href="/" className="flex items-center gap-3">
+          <Image
+            src="/images/logo.png"
+            alt="WMS Scotland"
+            width={70}
+            height={70}
+            priority
+          />
+
+          <div>
+            <h1 className="text-2xl font-black text-white">
+              WMS <span className="text-cyan-400">Scotland</span>
+            </h1>
+
+            <p className="text-xs text-gray-400">
+              Mobile Mechanic • East Lothian
+            </p>
+          </div>
+        </a>
 
         <div className="hidden gap-8 text-sm text-gray-300 md:flex">
-          <a href="#" className="hover:text-cyan-400">Home</a>
-          <a href="#" className="hover:text-cyan-400">Services</a>
-          <a href="#" className="hover:text-cyan-400">Areas</a>
-          <a href="#" className="hover:text-cyan-400">Contact</a>
+          <a href="#" className="hover:text-cyan-400 transition">
+            Home
+          </a>
+
+          <a href="#" className="hover:text-cyan-400 transition">
+            Services
+          </a>
+
+          <a href="#" className="hover:text-cyan-400 transition">
+            Areas
+          </a>
+
+          <a href="#" className="hover:text-cyan-400 transition">
+            Contact
+          </a>
         </div>
 
         <a
@@ -24,6 +49,7 @@ export default function Navbar() {
         >
           📞 Call
         </a>
+
       </nav>
     </header>
   );

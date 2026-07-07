@@ -1,6 +1,20 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-24 text-center">
+
+      <div className="mb-10 rounded-full bg-cyan-500/10 p-6 shadow-[0_0_80px_rgba(34,211,238,0.15)]">
+        <Image
+          src="/images/logo.png"
+          alt="WMS Scotland Logo"
+          width={420}
+          height={420}
+          className="drop-shadow-2xl"
+          priority
+        />
+      </div>
+
       <p className="mb-4 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-1 text-sm text-cyan-300">
         Mobile Mechanical Services • Cars • Vans • 4x4s • Tractors • Boats
       </p>
@@ -34,6 +48,7 @@ export default function Hero() {
           💬 WhatsApp
         </a>
       </div>
+
     </section>
   );
 }
