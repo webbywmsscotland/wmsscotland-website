@@ -15,7 +15,11 @@ export default function Reviews() {
   ];
 
   return (
-    <section className="bg-[#09101d] py-24">
+   
+    <section
+  id="reviews"
+  className="bg-[#09101d] py-24"
+>
       <div className="mx-auto max-w-7xl px-6">
 
         <h2 className="mb-4 text-center text-5xl font-black text-white">
