@@ -1,3 +1,5 @@
+import Footer from "./components/Footer";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
 import Contact from "./components/Contact";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -9,6 +11,7 @@ import Reviews from "./components/Reviews";
 import Areas from "./components/Areas";
 export default function Home() {
   return (
+  
     <main className="min-h-screen bg-[#0b1220] text-white">
       <Navbar />
       <Hero />
@@ -19,6 +22,9 @@ export default function Home() {
       <Reviews />
       <Areas />
       <Contact />
+      <FloatingWhatsApp />
+      <Footer />
+
     </main>
   );
 }
