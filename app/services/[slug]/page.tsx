@@ -23,7 +23,7 @@ export default function ServicesPage() {
 
           <SectionHeading
             title="Our Services"
-            subtitle="Professional mobile mechanical repairs carried out at your home, workplace or roadside across East Lothian."
+            subtitle="Professional mobile mechanical repairs carried out across East Lothian."
           />
 
         </div>
@@ -49,10 +49,12 @@ export default function ServicesPage() {
                   {service.description}
                 </p>
 
-                <div className="mt-8">
-                  <Button href="/contact">
-                    Enquire Now
+                <div className="mt-8 flex gap-3">
+
+                  <Button href={`/services/${service.slug}`}>
+                    Learn More
                   </Button>
+
                 </div>
 
               </Card>

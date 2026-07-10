@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { Phone, MessageCircle, Menu, X } from "lucide-react";
+
 import business from "../data/business";
+import navigation from "../data/navigation";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -14,9 +19,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-cyan-500/20 bg-[#0b1220]/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
-        {/* Logo */}
-
-        <a href="#" className="flex items-center gap-4">
+        <Link href="/" className="flex items-center gap-4">
           <Image
             src="/images/logo.png"
             alt={business.name}
@@ -35,31 +38,25 @@ export default function Navbar() {
               Mobile Mechanic • {business.location}
             </p>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
 
-        <div className="hidden items-center gap-8 text-sm text-gray-300 lg:flex">
+        <div className="hidden items-center gap-8 lg:flex">
 
-          <a href="#services" className="transition hover:text-cyan-400">
-            Services
-          </a>
-
-          <a href="#recent-repairs" className="transition hover:text-cyan-400">
-            Recent Work
-          </a>
-
-          <a href="#about" className="transition hover:text-cyan-400">
-            About
-          </a>
-
-          <a href="#reviews" className="transition hover:text-cyan-400">
-            Reviews
-          </a>
-
-          <a href="#contact" className="transition hover:text-cyan-400">
-            Contact
-          </a>
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-sm transition ${
+                pathname === item.href
+                  ? "font-bold text-cyan-400"
+                  : "text-gray-300 hover:text-cyan-400"
+              }`}
+            >
+              {item.name}
+            </Link>
+          ))}
 
         </div>
 
@@ -104,25 +101,20 @@ export default function Navbar() {
 
           <div className="flex flex-col px-6 py-6">
 
-            <a href="#services" onClick={closeMenu} className="py-3">
-              Services
-            </a>
-
-            <a href="#recent-repairs" onClick={closeMenu} className="py-3">
-              Recent Work
-            </a>
-
-            <a href="#about" onClick={closeMenu} className="py-3">
-              About
-            </a>
-
-            <a href="#reviews" onClick={closeMenu} className="py-3">
-              Reviews
-            </a>
-
-            <a href="#contact" onClick={closeMenu} className="py-3">
-              Contact
-            </a>
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                className={`py-3 ${
+                  pathname === item.href
+                    ? "font-bold text-cyan-400"
+                    : "text-white"
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
 
             <div className="mt-6 flex flex-col gap-3">
 
