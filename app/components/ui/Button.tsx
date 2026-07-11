@@ -5,38 +5,28 @@ type ButtonProps = {
   children: ReactNode;
   href: string;
   variant?: "primary" | "secondary";
+  className?: string;
 };
 
 export default function Button({
   children,
   href,
   variant = "primary",
+  className = "",
 }: ButtonProps) {
-  const classes =
+  const base =
+    "inline-flex items-center justify-center rounded-2xl px-8 py-4 font-bold transition-all duration-300 hover:-translate-y-1";
+
+  const styles =
     variant === "primary"
-      ? "inline-flex items-center justify-center rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black transition hover:bg-cyan-400"
-      : "inline-flex items-center justify-center rounded-xl border border-cyan-500 px-6 py-3 font-bold text-cyan-300 transition hover:bg-cyan-500/20";
-
-  const isExternal =
-    href.startsWith("http") ||
-    href.startsWith("tel:") ||
-    href.startsWith("mailto:");
-
-  if (isExternal) {
-    return (
-      <a
-        href={href}
-        className={classes}
-        target={href.startsWith("http") ? "_blank" : undefined}
-        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      >
-        {children}
-      </a>
-    );
-  }
+      ? "bg-cyan-500 text-black hover:bg-cyan-400 shadow-lg shadow-cyan-500/20"
+      : "border border-cyan-500 text-cyan-300 hover:bg-cyan-500/10";
 
   return (
-    <Link href={href} className={classes}>
+    <Link
+      href={href}
+      className={`${base} ${styles} ${className}`}
+    >
       {children}
     </Link>
   );

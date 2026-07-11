@@ -1,8 +1,9 @@
 import Hero from "./components/Hero";
+import HowItWorks from "./components/HowItWorks";
 import Emergency from "./components/Emergency";
-import Services from "./components/Services";
-import RecentRepairs from "./components/RecentRepairs";
 import WhyChoose from "./components/WhyChoose";
+import RecentRepairs from "./components/RecentRepairs";
+import Services from "./components/Services";
 import About from "./components/About";
 import Reviews from "./components/Reviews";
 import Areas from "./components/Areas";
@@ -16,13 +17,15 @@ export default function Home() {
 
       <Hero />
 
+      <HowItWorks />
+
       <Emergency />
 
-      <Services />
+      <WhyChoose />
 
       <RecentRepairs />
 
-      <WhyChoose />
+      <Services />
 
       <About />
 

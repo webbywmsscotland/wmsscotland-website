@@ -1,53 +1,137 @@
+import Image from "next/image";
+
+import Container from "./ui/Container";
+import Card from "./ui/Card";
+
 export default function About() {
   return (
-    <section className="py-24 bg-[#0b1220]">
-      <div className="mx-auto max-w-6xl px-6 grid gap-12 lg:grid-cols-2 items-center">
+    <section
+      id="about"
+      className="bg-[#08111F] py-24"
+    >
+      <Container>
 
-        <div>
-          <h2 className="text-4xl font-black text-white mb-6">
-            Meet <span className="text-cyan-400">Webby</span>
-          </h2>
+        <div className="grid items-center gap-16 lg:grid-cols-2">
 
-          <p className="text-gray-300 leading-8 text-lg mb-6">
-            I'm Scott, owner of WMS Scotland.
-          </p>
+          {/* Photo */}
 
-          <p className="text-gray-300 leading-8 mb-6">
-            I started WMS Scotland to offer something different from the
-            traditional garage experience. No waiting around, no recovery
-            trucks and no unnecessary inconvenience.
-          </p>
+          <div>
 
-          <p className="text-gray-300 leading-8 mb-6">
-            Whether you're at home, at work or stranded at the roadside,
-            I bring professional mechanical services directly to you.
-          </p>
+            <Image
+              src="/repairs/boat.jpeg"
+              alt="Scott from WMS Scotland"
+              width={800}
+              height={900}
+              className="rounded-3xl border border-cyan-500/20 shadow-2xl"
+            />
 
-          <p className="text-gray-300 leading-8">
-            From family cars and vans to tractors, agricultural machinery,
-            4x4s and boats — if it has an engine, there's a good chance I
-            can help.
-          </p>
+          </div>
+
+          {/* Story */}
+
+          <div>
+
+            <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-cyan-400">
+              Meet Scott
+            </p>
+
+            <h2 className="text-5xl font-black text-white">
+              The person behind
+              <span className="block text-cyan-400">
+                WMS Scotland
+              </span>
+            </h2>
+
+            <p className="mt-8 text-lg leading-9 text-gray-300">
+              Hi, I'm Scott, the owner of WMS Scotland.
+            </p>
+
+            <p className="mt-6 text-lg leading-9 text-gray-300">
+              I started WMS Scotland with one simple goal: to make vehicle
+              repairs easier. Instead of asking customers to take time off
+              work, arrange lifts or sit in a waiting room, I bring
+              professional mechanical repairs directly to your home,
+              workplace or another convenient location.
+            </p>
+
+            <p className="mt-6 text-lg leading-9 text-gray-300">
+              I work on everything from everyday family cars and vans to
+              agricultural machinery and marine engines. Whatever I'm
+              repairing, you'll always receive honest advice, quality
+              workmanship and clear communication.
+            </p>
+
+            <p className="mt-6 text-lg leading-9 text-gray-300">
+              I'm proud to be based in Dunbar and to help keep people moving
+              across East Lothian.
+            </p>
+
+          </div>
+
         </div>
 
-        <div className="rounded-3xl border border-cyan-500/20 bg-[#10192d] p-10">
+        {/* Values */}
 
-          <h3 className="text-2xl font-bold text-cyan-400 mb-6">
-            Why customers choose WMS Scotland
-          </h3>
+        <div className="mt-20">
 
-          <ul className="space-y-5 text-lg text-gray-200">
-            <li>✅ Honest advice</li>
-            <li>✅ Mobile service at your home or workplace</li>
-            <li>✅ Friendly, personal service</li>
-            <li>✅ Modern diagnostics</li>
-            <li>✅ Cars, vans, 4x4s, tractors & boats</li>
-            <li>✅ Quality parts used wherever possible</li>
-          </ul>
+          <Card>
+
+            <h3 className="mb-8 text-3xl font-black text-white">
+              Why Customers Choose
+              <span className="text-cyan-400"> WMS Scotland</span>
+            </h3>
+
+            <div className="grid gap-6 md:grid-cols-2">
+
+              <div className="rounded-2xl bg-[#08111F] p-6">
+                <h4 className="mb-2 font-bold text-cyan-400">
+                  🚐 We Come To You
+                </h4>
+
+                <p className="text-gray-300">
+                  Repairs carried out at your home, workplace or another
+                  convenient location.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#08111F] p-6">
+                <h4 className="mb-2 font-bold text-cyan-400">
+                  🤝 Honest Advice
+                </h4>
+
+                <p className="text-gray-300">
+                  Straightforward recommendations without unnecessary work.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#08111F] p-6">
+                <h4 className="mb-2 font-bold text-cyan-400">
+                  🔧 Wide Experience
+                </h4>
+
+                <p className="text-gray-300">
+                  Cars, vans, 4x4s, agricultural machinery and marine engines.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#08111F] p-6">
+                <h4 className="mb-2 font-bold text-cyan-400">
+                  ⭐ Quality Workmanship
+                </h4>
+
+                <p className="text-gray-300">
+                  Every repair is completed with care, using quality parts
+                  wherever practical.
+                </p>
+              </div>
+
+            </div>
+
+          </Card>
 
         </div>
 
-      </div>
+      </Container>
     </section>
   );
 }

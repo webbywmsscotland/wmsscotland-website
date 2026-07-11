@@ -1,111 +1,122 @@
 import Image from "next/image";
-import {
-  Phone,
-  MessageCircle,
-  Truck,
-  Wrench,
-  ShieldCheck,
-} from "lucide-react";
+import { Phone, MessageCircle, CheckCircle } from "lucide-react";
 
 import business from "../data/business";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-7xl px-6 pt-10 pb-24">
+    <section className="relative overflow-hidden bg-[#08111F]">
 
-      <div className="grid items-center gap-16 lg:grid-cols-2">
+      {/* Background glow */}
 
-        {/* LEFT SIDE */}
+      <div className="absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-20 px-6 py-20 lg:grid-cols-2">
+
+        {/* LEFT */}
 
         <div>
 
-          <p className="mb-6 inline-block rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 text-sm font-semibold uppercase tracking-widest text-cyan-300">
+          <div className="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 text-sm font-semibold uppercase tracking-widest text-cyan-300">
             Mobile Mechanic • {business.location}
-          </p>
+          </div>
 
-          <h1 className="text-5xl font-black text-white md:text-7xl">
-            {business.name}
+          <h1 className="mt-8 text-5xl font-black leading-tight text-white md:text-7xl">
+            Professional
+            <br />
+            Mobile Mechanic
+            <br />
+            Services
           </h1>
 
-          <h2 className="mt-4 max-w-lg text-4xl font-black leading-tight text-cyan-400 md:text-5xl">
-            {business.slogan}
+          <h2 className="mt-6 text-3xl font-bold text-cyan-400">
+            Keeping East Lothian Moving.
           </h2>
 
-          <p className="mt-8 max-w-xl text-xl leading-9 text-gray-300">
-            Honest, reliable mobile mechanical repairs carried out at your
-            home, workplace or roadside.
-
-            <br />
-            <br />
-
-            From servicing and diagnostics to brakes, suspension, clutches,
-            agricultural machinery and marine engines, WMS Scotland keeps
-            East Lothian moving.
+          <p className="mt-8 max-w-xl text-xl leading-9 text-slate-300">
+            Professional servicing, diagnostics and repairs carried out
+            at your home, workplace or another convenient location.
+            No waiting rooms. No recovery trucks. Just honest,
+            reliable mechanical repairs that fit around your day.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-5">
+          <div className="mt-10 flex flex-wrap gap-4">
 
             <a
               href={business.phoneLink}
-              className="flex items-center gap-3 rounded-2xl bg-cyan-500 px-10 py-5 text-xl font-bold text-black transition duration-300 hover:scale-105 hover:bg-cyan-400"
+              className="rounded-2xl bg-cyan-500 px-8 py-4 font-bold text-black transition hover:scale-105 hover:bg-cyan-400"
             >
-              <Phone size={24} />
-              Call Now
+              <span className="flex items-center gap-2">
+                <Phone size={20} />
+                Call Now
+              </span>
             </a>
 
             <a
               href={business.whatsapp}
-              className="flex items-center gap-3 rounded-2xl border-2 border-cyan-500 px-10 py-5 text-xl font-bold transition duration-300 hover:scale-105 hover:bg-cyan-500/20"
+              className="rounded-2xl border border-cyan-500 px-8 py-4 font-bold text-cyan-300 transition hover:bg-cyan-500/10"
             >
-              <MessageCircle size={24} />
-              WhatsApp
+              <span className="flex items-center gap-2">
+                <MessageCircle size={20} />
+                WhatsApp
+              </span>
             </a>
 
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-3">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
 
-            <div className="rounded-xl bg-[#10192d] p-5 transition hover:-translate-y-1 hover:border hover:border-cyan-400">
-              <Truck className="mb-3 text-cyan-400" size={34} />
+            <div className="flex items-center gap-3">
 
-              <h3 className="font-bold text-cyan-400">
-                We Come To You
-              </h3>
+              <CheckCircle className="text-cyan-400" />
+
+              <span>Cars & Vans</span>
+
             </div>
 
-            <div className="rounded-xl bg-[#10192d] p-5 transition hover:-translate-y-1 hover:border hover:border-cyan-400">
-              <Wrench className="mb-3 text-cyan-400" size={34} />
+            <div className="flex items-center gap-3">
 
-              <h3 className="font-bold text-cyan-400">
-                Cars • Vans • Tractors
-              </h3>
+              <CheckCircle className="text-cyan-400" />
+
+              <span>Agricultural Machinery</span>
+
             </div>
 
-            <div className="rounded-xl bg-[#10192d] p-5 transition hover:-translate-y-1 hover:border hover:border-cyan-400">
-              <ShieldCheck className="mb-3 text-cyan-400" size={34} />
+            <div className="flex items-center gap-3">
 
-              <h3 className="font-bold text-cyan-400">
-                Honest & Reliable
-              </h3>
+              <CheckCircle className="text-cyan-400" />
+
+              <span>Marine Engines</span>
+
+            </div>
+
+            <div className="flex items-center gap-3">
+
+              <CheckCircle className="text-cyan-400" />
+
+              <span>Home & Workplace Visits</span>
+
             </div>
 
           </div>
 
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT */}
 
-        <div className="flex justify-center">
+        <div className="relative">
 
-          <div className="rounded-full bg-cyan-500/10 p-8 shadow-[0_0_120px_rgba(34,211,238,0.25)]">
+          <div className="absolute -inset-4 rounded-[40px] bg-cyan-500/20 blur-3xl" />
+
+          <div className="relative overflow-hidden rounded-[40px] border border-cyan-500/20 bg-[#10192D] p-3 shadow-2xl">
 
             <Image
-              src="/images/logo.png"
-              alt={business.name}
-              width={500}
-              height={500}
+              src="/repairs/hero-gti.jpg"
+              alt="WMS Scotland Mobile Mechanic"
+              width={900}
+              height={900}
               priority
-              className="drop-shadow-[0_0_60px_rgba(34,211,238,0.35)]"
+              className="rounded-[28px] object-cover transition duration-700 hover:scale-105"
             />
 
           </div>

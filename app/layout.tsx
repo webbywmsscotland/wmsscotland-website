@@ -6,6 +6,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import StickyMobileBar from "./components/StickyMobileBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,20 +19,71 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WMS Scotland | Mobile Mechanic | Dunbar & East Lothian",
+  metadataBase: new URL("https://wmsscotland.com"),
+
+  title: {
+    default: "WMS Scotland | Mobile Mechanic in East Lothian",
+    template: "%s | WMS Scotland",
+  },
+
   description:
-    "Professional mobile mechanic covering Dunbar and East Lothian. Servicing, diagnostics, repairs, brakes, batteries, suspension and roadside assistance. We come to you.",
+    "Professional mobile mechanic based in Dunbar, covering East Lothian. Servicing, diagnostics, brakes, suspension, agricultural machinery and marine engine repairs carried out at your home or workplace.",
+
   keywords: [
     "Mobile Mechanic",
-    "Mobile Mechanic Dunbar",
     "Mobile Mechanic East Lothian",
-    "Car Repairs Dunbar",
-    "Vehicle Servicing",
-    "Diagnostics",
+    "Mechanic Dunbar",
+    "Mechanic North Berwick",
+    "Mechanic Haddington",
+    "Car Servicing",
+    "Vehicle Diagnostics",
     "Brake Repairs",
-    "Roadside Assistance",
+    "Suspension Repairs",
+    "Agricultural Machinery Repairs",
+    "Marine Engine Repairs",
     "WMS Scotland",
   ],
+
+  authors: [
+    {
+      name: "WMS Scotland",
+    },
+  ],
+
+  creator: "WMS Scotland",
+
+  publisher: "WMS Scotland",
+
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://wmsscotland.com",
+    siteName: "WMS Scotland",
+    title: "WMS Scotland | Mobile Mechanic in East Lothian",
+    description:
+      "Professional mobile mechanic covering East Lothian. Repairs, servicing, diagnostics, agricultural and marine mechanical services at your home or workplace.",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "WMS Scotland",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "WMS Scotland",
+    description:
+      "Professional Mobile Mechanic covering East Lothian.",
+    images: ["/images/logo.png"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -40,22 +92,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#0b1220] text-white">
-
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#08111F] text-white antialiased`}
+      >
         <Navbar />
 
-        <main className="flex-1">
-          {children}
-        </main>
+        {children}
 
         <FloatingWhatsApp />
 
-        <Footer />
+        <StickyMobileBar />
 
+        <Footer />
       </body>
     </html>
   );

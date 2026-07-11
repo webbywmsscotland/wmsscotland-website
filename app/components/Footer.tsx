@@ -1,88 +1,111 @@
+import Link from "next/link";
+import { Phone, MessageCircle, MapPin } from "lucide-react";
+
+import business from "../data/business";
+
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-cyan-500/20 bg-[#08101c]">
-      <div className="mx-auto max-w-7xl px-6 py-12">
+    <footer className="border-t border-cyan-500/20 bg-[#050B16]">
 
-        <div className="grid gap-10 md:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-3">
 
-          {/* Branding */}
-          <div>
-            <h3 className="text-3xl font-black text-white">
-              WMS <span className="text-cyan-400">Scotland</span>
-            </h3>
+        {/* Company */}
 
-            <p className="mt-4 text-gray-400">
-              The Garage That Comes To You.
-            </p>
+        <div>
 
-            <p className="mt-2 text-gray-500">
-              Mobile Mechanic covering Dunbar & East Lothian.
-            </p>
-          </div>
+          <h2 className="text-3xl font-black text-white">
+            WMS <span className="text-cyan-400">Scotland</span>
+          </h2>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="mb-4 text-xl font-bold text-cyan-400">
-              Quick Links
-            </h4>
+          <p className="mt-5 leading-8 text-gray-400">
+            Professional mobile mechanic covering East Lothian.
+            Repairs, servicing, diagnostics, agricultural machinery
+            and marine engines carried out at your home or workplace.
+          </p>
 
-            <ul className="space-y-2 text-gray-300">
-              <li>
-                <a href="#services" className="hover:text-cyan-400 transition">
-                  Services
-                </a>
-              </li>
+        </div>
 
-              <li>
-                <a href="#about" className="hover:text-cyan-400 transition">
-                  About
-                </a>
-              </li>
+        {/* Quick Links */}
 
-              <li>
-                <a href="#reviews" className="hover:text-cyan-400 transition">
-                  Reviews
-                </a>
-              </li>
+        <div>
 
-              <li>
-                <a href="#contact" className="hover:text-cyan-400 transition">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
+          <h3 className="text-xl font-bold text-white">
+            Quick Links
+          </h3>
 
-          {/* Contact */}
-          <div>
-            <h4 className="mb-4 text-xl font-bold text-cyan-400">
+          <div className="mt-6 flex flex-col gap-4">
+
+            <Link href="/" className="text-gray-400 transition hover:text-cyan-400">
+              Home
+            </Link>
+
+            <Link href="/services" className="text-gray-400 transition hover:text-cyan-400">
+              Services
+            </Link>
+
+            <Link href="/repairs" className="text-gray-400 transition hover:text-cyan-400">
+              Repair Portfolio
+            </Link>
+
+            <Link href="/about" className="text-gray-400 transition hover:text-cyan-400">
+              About
+            </Link>
+
+            <Link href="/contact" className="text-gray-400 transition hover:text-cyan-400">
               Contact
-            </h4>
+            </Link>
 
-            <p className="text-gray-300">
-              📞 07523 100958
-            </p>
-
-            <p className="mt-2 text-gray-300">
-              💬 WhatsApp Available
-            </p>
-
-            <p className="mt-2 text-gray-300">
-              📍 Dunbar, East Lothian
-            </p>
           </div>
 
         </div>
 
-        <div className="mt-10 border-t border-cyan-500/20 pt-6 text-center text-sm text-gray-500">
-          <p>© 2026 WMS Scotland. All rights reserved.</p>
+        {/* Contact */}
 
-          <p className="mt-2">
-            Website proudly built by Scott Webster with OpenAI's ChatGPT.
-          </p>
+        <div>
+
+          <h3 className="text-xl font-bold text-white">
+            Contact
+          </h3>
+
+          <div className="mt-6 space-y-5">
+
+            <a
+              href={business.phoneLink}
+              className="flex items-center gap-3 text-gray-400 transition hover:text-cyan-400"
+            >
+              <Phone size={18} />
+              {business.phone}
+            </a>
+
+            <a
+              href={business.whatsapp}
+              className="flex items-center gap-3 text-gray-400 transition hover:text-cyan-400"
+            >
+              <MessageCircle size={18} />
+              WhatsApp
+            </a>
+
+            <div className="flex items-center gap-3 text-gray-400">
+              <MapPin size={18} />
+              Dunbar, East Lothian
+            </div>
+
+          </div>
+
         </div>
 
       </div>
+
+      <div className="border-t border-cyan-500/10 py-6">
+
+        <p className="text-center text-sm text-gray-500">
+          © {year} WMS Scotland. All rights reserved.
+        </p>
+
+      </div>
+
     </footer>
   );
 }

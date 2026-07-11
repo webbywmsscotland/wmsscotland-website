@@ -8,12 +8,12 @@ const navigation = [
     href: "/services",
   },
   {
-    name: "About",
-    href: "/about",
+    name: "Repair Portfolio",
+    href: "/repairs",
   },
   {
-    name: "Recent Work",
-    href: "/recent-work",
+    name: "About",
+    href: "/about",
   },
   {
     name: "Contact",
