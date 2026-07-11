@@ -21,6 +21,8 @@ export default function Home() {
 
       <Emergency />
 
+<Reviews />
+
       <WhyChoose />
 
       <RecentRepairs />
@@ -29,8 +31,7 @@ export default function Home() {
 
       <About />
 
-      <Reviews />
-
+    
       <Areas />
 
       <FAQ />
