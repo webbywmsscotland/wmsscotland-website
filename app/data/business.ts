@@ -3,10 +3,12 @@ const business = {
 
   slogan: "The Garage That Comes To You.",
 
-  phone: "07523 100958",
+  // Temporary call number
+  phone: "07593 065949",
 
-  phoneLink: "tel:07523100958",
+  phoneLink: "tel:07593065949",
 
+  // WhatsApp stays on your existing work number
   whatsapp: "https://wa.me/447523100958",
 
   email: "info@wmsscotland.com",
