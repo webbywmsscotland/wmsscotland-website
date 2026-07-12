@@ -1,5 +1,6 @@
 import Container from "../components/ui/Container";
 import SectionHeading from "../components/ui/SectionHeading";
+import CallToAction from "./components/CallToAction";
 import Button from "../components/ui/Button";
 
 export default function AboutPage() {

@@ -33,7 +33,10 @@ export default function Services() {
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
+    <section
+  id="services"
+  className="mx-auto max-w-7xl px-6 py-20"
+>
       <h2 className="mb-12 text-center text-4xl font-black text-white">
         Our Services
       </h2>
