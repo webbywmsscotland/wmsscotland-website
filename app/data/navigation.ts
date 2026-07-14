@@ -8,6 +8,10 @@ const navigation = [
     href: "/services",
   },
   {
+    name: "Request a Quote",
+    href: "/quote",
+  },
+  {
     name: "Repair Portfolio",
     href: "/repairs",
   },
