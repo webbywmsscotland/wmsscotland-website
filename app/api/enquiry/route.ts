@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { resend } from "@/lib/email";
+import { sendOwnerNotification } from "@/lib/notifications";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Save the enquiry
+    // Save enquiry to Supabase
     const { data, error } = await supabase
       .from("enquiries")
       .insert({
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
-      console.error(error);
+      console.error("Database Error:", error);
 
       return NextResponse.json(
         {
@@ -41,25 +41,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Send notification email
-    await resend.emails.send({
-      from: "WMS Scotland <onboarding@resend.dev>",
-      to: ["info@wmsscotland.com"],
-      subject: `🚗 New Quote Request - ${body.name}`,
-      html: `
-        <h2>New Website Enquiry</h2>
-
-        <p><strong>Name:</strong> ${body.name}</p>
-        <p><strong>Phone:</strong> ${body.phone}</p>
-        <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Vehicle:</strong> ${body.vehicle}</p>
-        <p><strong>Registration:</strong> ${body.registration}</p>
-        <p><strong>Location:</strong> ${body.location}</p>
-
-        <hr />
-
-        <p>${body.message}</p>
-      `,
+    // Send email notification to Scott
+    await sendOwnerNotification({
+      name: body.name,
+      phone: body.phone,
+      email: body.email,
+      vehicle: body.vehicle,
+      registration: body.registration,
+      location: body.location,
+      message: body.message,
     });
 
     return NextResponse.json({
@@ -67,7 +57,7 @@ export async function POST(request: Request) {
       enquiry: data,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Server Error:", error);
 
     return NextResponse.json(
       {
