@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Phone, MessageCircle, MapPin } from "lucide-react";
+import { Phone, MessageCircle, MapPin, Heart } from "lucide-react";
 
 import business from "../data/business";
 
@@ -20,9 +20,12 @@ export default function Footer() {
           </h2>
 
           <p className="mt-5 leading-8 text-gray-400">
-            Professional mobile mechanic covering East Lothian.
-            Repairs, servicing, diagnostics, agricultural machinery
-            and marine engines carried out at your home or workplace.
+            The Garage That Comes To You.
+          </p>
+
+          <p className="mt-5 leading-8 text-gray-400">
+            Honest mobile vehicle repairs, servicing and diagnostics carried out
+            at your home or workplace across Dunbar and East Lothian.
           </p>
 
         </div>
@@ -53,8 +56,8 @@ export default function Footer() {
               About
             </Link>
 
-            <Link href="/contact" className="text-gray-400 transition hover:text-cyan-400">
-              Contact
+            <Link href="/quote" className="font-semibold text-cyan-400 transition hover:text-cyan-300">
+              Request a Quote
             </Link>
 
           </div>
@@ -98,11 +101,23 @@ export default function Footer() {
 
       </div>
 
-      <div className="border-t border-cyan-500/10 py-6">
+      <div className="border-t border-cyan-500/10 py-8">
 
-        <p className="text-center text-sm text-gray-500">
-          © {year} WMS Scotland. All rights reserved.
-        </p>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-center md:flex-row">
+
+          <p className="text-sm text-gray-500">
+            © {year} WMS Scotland. All rights reserved.
+          </p>
+
+          <p className="flex items-center gap-2 text-sm text-gray-500">
+            Designed & developed by Scott Webster, with ChatGPT
+            <Heart
+              size={16}
+              className="fill-cyan-400 text-cyan-400"
+            />
+          </p>
+
+        </div>
 
       </div>
 

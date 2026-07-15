@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Button from "../ui/Button";
+import ImageUpload from "../ui/ImageUpload";
 
 export default function QuoteForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ export default function QuoteForm() {
     location: "",
     message: "",
   });
+
+  const [images, setImages] = useState<File[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
@@ -59,6 +62,8 @@ export default function QuoteForm() {
           location: "",
           message: "",
         });
+
+        setImages([]);
       } else {
         setError(result.error || "Something went wrong.");
       }
@@ -71,6 +76,7 @@ export default function QuoteForm() {
 
   return (
     <div className="rounded-3xl border border-cyan-500/20 bg-[#10192d] p-8 shadow-xl">
+
       <h2 className="mb-2 text-4xl font-black text-white">
         Request a Quote
       </h2>
@@ -79,7 +85,10 @@ export default function QuoteForm() {
         Tell us a little about your vehicle and the problem you're having.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
 
         <input
           name="name"
@@ -139,6 +148,11 @@ export default function QuoteForm() {
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
+        <ImageUpload
+          images={images}
+          setImages={setImages}
+        />
+
         {success && (
           <div className="rounded-xl bg-green-600/20 p-4 text-green-400">
             {success}
@@ -159,6 +173,7 @@ export default function QuoteForm() {
         </Button>
 
       </form>
+
     </div>
   );
 }
