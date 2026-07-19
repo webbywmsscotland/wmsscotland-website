@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+
+import { enquirySchema } from "@/lib/validation";
 import { sendOwnerNotification } from "@/lib/notifications";
 
 const supabase = createClient(
@@ -11,17 +13,20 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Save enquiry to Supabase
+    // Validate the incoming data
+    const enquiry = enquirySchema.parse(body);
+
+    // Save to database
     const { data, error } = await supabase
       .from("enquiries")
       .insert({
-        name: body.name,
-        phone: body.phone,
-        email: body.email,
-        vehicle: body.vehicle,
-        registration: body.registration,
-        location: body.location,
-        message: body.message,
+        name: enquiry.name,
+        phone: enquiry.phone,
+        email: enquiry.email,
+        vehicle: enquiry.vehicle,
+        registration: enquiry.registration,
+        location: enquiry.location,
+        message: enquiry.message,
         photos: "",
         status: "New",
         source: "Website",
@@ -41,30 +46,28 @@ export async function POST(request: Request) {
       );
     }
 
-    // Send email notification to Scott
-    await sendOwnerNotification({
-      name: body.name,
-      phone: body.phone,
-      email: body.email,
-      vehicle: body.vehicle,
-      registration: body.registration,
-      location: body.location,
-      message: body.message,
-    });
+    // Send notification email
+    await sendOwnerNotification(enquiry);
 
     return NextResponse.json({
       success: true,
       enquiry: data,
     });
-  } catch (error) {
-    console.error("Server Error:", error);
+
+  } catch (error: unknown) {
+
+    console.error(error);
 
     return NextResponse.json(
       {
         success: false,
-        error: "Server error",
+        error: "Unable to process enquiry.",
       },
-      { status: 500 }
+      {
+        status: 400,
+      }
     );
+
   }
+
 }
