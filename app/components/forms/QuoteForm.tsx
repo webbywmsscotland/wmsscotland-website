@@ -24,10 +24,10 @@ export default function QuoteForm() {
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -38,45 +38,59 @@ export default function QuoteForm() {
     setError("");
 
     try {
+      const data = new FormData();
+
+      data.append("name", formData.name);
+      data.append("phone", formData.phone);
+      data.append("email", formData.email);
+      data.append("vehicle", formData.vehicle);
+      data.append("registration", formData.registration);
+      data.append("location", formData.location);
+      data.append("message", formData.message);
+
+      images.forEach((image) => {
+        data.append("photos", image);
+      });
+
       const response = await fetch("/api/enquiry", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: data,
       });
 
       const result = await response.json();
 
-      if (result.success) {
-        setSuccess(
-          "Thanks! Your enquiry has been sent. We'll be in touch as soon as possible."
-        );
-
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          vehicle: "",
-          registration: "",
-          location: "",
-          message: "",
-        });
-
-        setImages([]);
-      } else {
-        setError(result.error || "Something went wrong.");
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Unable to send enquiry.");
       }
-    } catch {
-      setError("Unable to send your enquiry.");
-    }
 
-    setLoading(false);
+      setSuccess(
+        "Thanks! Your enquiry has been sent. We'll be in touch as soon as possible."
+      );
+
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        vehicle: "",
+        registration: "",
+        location: "",
+        message: "",
+      });
+
+      setImages([]);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to send your enquiry."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="rounded-3xl border border-cyan-500/20 bg-[#10192d] p-8 shadow-xl">
-
       <h2 className="mb-2 text-4xl font-black text-white">
         Request a Quote
       </h2>
@@ -85,16 +99,13 @@ export default function QuoteForm() {
         Tell us a little about your vehicle and the problem you're having.
       </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6"
-      >
-
+      <form onSubmit={handleSubmit} className="space-y-6">
         <input
           name="name"
           placeholder="Your Name"
           value={formData.name}
           onChange={handleChange}
+          required
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
@@ -103,12 +114,13 @@ export default function QuoteForm() {
           placeholder="Phone Number"
           value={formData.phone}
           onChange={handleChange}
-          className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
           required
+          className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
         <input
           name="email"
+          type="email"
           placeholder="Email Address"
           value={formData.email}
           onChange={handleChange}
@@ -120,6 +132,7 @@ export default function QuoteForm() {
           placeholder="Vehicle"
           value={formData.vehicle}
           onChange={handleChange}
+          required
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
@@ -128,6 +141,7 @@ export default function QuoteForm() {
           placeholder="Registration"
           value={formData.registration}
           onChange={handleChange}
+          required
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
@@ -136,6 +150,7 @@ export default function QuoteForm() {
           placeholder="Town / Village"
           value={formData.location}
           onChange={handleChange}
+          required
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
@@ -145,6 +160,7 @@ export default function QuoteForm() {
           rows={6}
           value={formData.message}
           onChange={handleChange}
+          required
           className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 text-white"
         />
 
@@ -171,9 +187,7 @@ export default function QuoteForm() {
         >
           {loading ? "Sending..." : "Request My Quote"}
         </Button>
-
       </form>
-
     </div>
   );
 }

@@ -1,23 +1,35 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 
+import { supabaseAdmin } from "@/lib/supabase-admin";
+import { uploadEnquiryPhotos } from "@/lib/storage";
 import { enquirySchema } from "@/lib/validation";
 import { sendOwnerNotification } from "@/lib/notifications";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const formData = await request.formData();
 
-    // Validate the incoming data
-    const enquiry = enquirySchema.parse(body);
+    const enquiry = enquirySchema.parse({
+      name: String(formData.get("name") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      vehicle: String(formData.get("vehicle") ?? ""),
+      registration: String(formData.get("registration") ?? ""),
+      location: String(formData.get("location") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    });
 
-    // Save to database
-    const { data, error } = await supabase
+    const files = formData
+      .getAll("photos")
+      .filter((item): item is File => item instanceof File && item.size > 0);
+
+    let uploadedPhotos: string[] = [];
+
+    if (files.length > 0) {
+      uploadedPhotos = await uploadEnquiryPhotos(files);
+    }
+
+    const { data, error } = await supabaseAdmin
       .from("enquiries")
       .insert({
         name: enquiry.name,
@@ -27,7 +39,7 @@ export async function POST(request: Request) {
         registration: enquiry.registration,
         location: enquiry.location,
         message: enquiry.message,
-        photos: "",
+        photos: uploadedPhotos,
         status: "New",
         source: "Website",
       })
@@ -35,39 +47,29 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
-      console.error("Database Error:", error);
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: error.message,
-        },
-        { status: 500 }
-      );
+      throw error;
     }
 
-    // Send notification email
     await sendOwnerNotification(enquiry);
 
     return NextResponse.json({
       success: true,
       enquiry: data,
     });
-
-  } catch (error: unknown) {
-
+  } catch (error) {
     console.error(error);
+
+    const message =
+      error instanceof Error ? error.message : "Unable to process enquiry.";
 
     return NextResponse.json(
       {
         success: false,
-        error: "Unable to process enquiry.",
+        error: message,
       },
       {
         status: 400,
       }
     );
-
   }
-
 }
