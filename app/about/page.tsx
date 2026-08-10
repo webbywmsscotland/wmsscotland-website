@@ -1,5 +1,4 @@
 import Container from "../components/ui/Container";
-import SectionHeading from "../components/ui/SectionHeading";
 import CallToAction from "../components/CallToAction";
 import Button from "../components/ui/Button";
 
@@ -8,11 +7,21 @@ export default function AboutPage() {
     <main className="bg-[#08111F] text-white">
       <div className="py-20">
         <Container>
-          <SectionHeading
-            eyebrow="About WMS Scotland"
-            title="Local, Reliable Mobile Mechanic in East Lothian"
-            description="Based in Dunbar and covering East Lothian, WMS Scotland provides professional servicing, repairs and diagnostics at your home, workplace or roadside."
-          />
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
+              About WMS Scotland
+            </p>
+
+            <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+              Local, Reliable Mobile Mechanic in East Lothian
+            </h1>
+
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Based in Dunbar and covering East Lothian, WMS Scotland provides
+              professional servicing, repairs and diagnostics at your home,
+              workplace or roadside.
+            </p>
+          </div>
 
           <div className="mt-12 grid gap-10 lg:grid-cols-2">
             <div className="space-y-6 leading-7 text-gray-300">
@@ -51,9 +60,9 @@ export default function AboutPage() {
             </div>
 
             <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-8">
-              <h3 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold text-white">
                 Why customers choose WMS Scotland
-              </h3>
+              </h2>
 
               <ul className="mt-6 space-y-4 text-gray-300">
                 <li>✓ Mobile service at home or work</li>
