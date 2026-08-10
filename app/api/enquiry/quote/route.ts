@@ -10,17 +10,24 @@ export async function POST(request: Request) {
   try {
     const {
       id,
-      status,
-      booked_date,
-      booked_time,
+      estimate_from,
+      estimate_to,
+      admin_notes,
+      labour_charge,
+      parts_charge,
+      callout_charge,
     } = await request.json();
 
     const { data, error } = await supabase
       .from("enquiries")
       .update({
-        status,
-        booked_date,
-        booked_time,
+        estimate_from,
+        estimate_to,
+        admin_notes,
+        labour_charge,
+        parts_charge,
+        callout_charge,
+        status: "Quoted",
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)
@@ -28,6 +35,8 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
+      console.error(error);
+
       return NextResponse.json(
         {
           success: false,
@@ -44,6 +53,8 @@ export async function POST(request: Request) {
       enquiry: data,
     });
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       {
         success: false,

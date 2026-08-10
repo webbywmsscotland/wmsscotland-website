@@ -29,6 +29,7 @@ export const metadata: Metadata = {
   description:
     "Professional mobile mechanic based in Dunbar, covering East Lothian. Servicing, diagnostics, brakes, suspension, agricultural machinery and marine engine repairs carried out at your home or workplace.",
 
+
   keywords: [
     "Mobile Mechanic",
     "Mobile Mechanic East Lothian",
@@ -51,7 +52,6 @@ export const metadata: Metadata = {
   ],
 
   creator: "WMS Scotland",
-
   publisher: "WMS Scotland",
 
   openGraph: {
@@ -83,6 +83,12 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
+  },
+
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "WMS Today",
   },
 };
 

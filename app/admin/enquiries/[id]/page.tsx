@@ -1,43 +1,17 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
-import {
-  ArrowLeft,
-  Phone,
-  Mail,
-  Car,
-  MapPin,
-  Calendar,
-  ClipboardList,
-} from "lucide-react";
+import Link from "next/link";
+import BookingForm from "@/app/components/admin/BookingForm";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
-
-function statusColour(status: string) {
-  switch (status) {
-    case "New":
-      return "bg-red-500/20 text-red-400";
-    case "Quoted":
-      return "bg-orange-500/20 text-orange-400";
-    case "Booked":
-      return "bg-green-500/20 text-green-400";
-    case "Completed":
-      return "bg-cyan-500/20 text-cyan-400";
-    default:
-      return "bg-gray-500/20 text-gray-400";
-  }
-}
-
-export default async function EnquiryPage({ params }: PageProps) {
+export default async function EnquiryDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   const { data: enquiry } = await supabase
@@ -47,144 +21,122 @@ export default async function EnquiryPage({ params }: PageProps) {
     .single();
 
   if (!enquiry) {
-    notFound();
+    return (
+      <main className="min-h-screen bg-[#0b1220] p-6 text-white">
+        Enquiry not found.
+      </main>
+    );
   }
 
   return (
-    <main className="min-h-screen bg-[#0b1220] text-white">
-      <div className="mx-auto max-w-5xl px-6 py-12">
+    <main className="min-h-screen bg-[#0b1220] p-6 text-white">
+      <div className="mx-auto max-w-5xl space-y-6">
 
         <Link
           href="/admin"
-          className="mb-10 inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300"
+          className="inline-flex items-center gap-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 font-semibold text-cyan-300 transition hover:bg-cyan-500/20"
         >
-          <ArrowLeft size={18} />
-          Back to Dashboard
+          ← Back to Dashboard
         </Link>
 
-        <div className="rounded-3xl border border-cyan-500/20 bg-[#10192d] p-10">
+        <div className="rounded-3xl border border-cyan-500/20 bg-[#101935] p-6">
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
 
-            <div>
+            <div className="space-y-3">
 
-              <span
-                className={`rounded-full px-4 py-2 text-sm font-bold ${statusColour(
-                  enquiry.status
-                )}`}
-              >
+              <div className="inline-flex rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-bold text-cyan-300">
                 {enquiry.status}
-              </span>
+              </div>
 
-              <h1 className="mt-6 text-5xl font-black">
+              <h1 className="text-4xl font-black">
                 {enquiry.name}
               </h1>
 
+              <div className="space-y-2 text-gray-300">
+
+                <p>
+                  <strong>Vehicle:</strong> {enquiry.vehicle}
+                  {enquiry.registration
+                    ? ` (${enquiry.registration})`
+                    : ""}
+                </p>
+
+                <p>
+                  <strong>Location:</strong> {enquiry.location}
+                </p>
+
+                <p>
+                  <strong>Phone:</strong> {enquiry.phone}
+                </p>
+
+                {enquiry.email && (
+                  <p>
+                    <strong>Email:</strong> {enquiry.email}
+                  </p>
+                )}
+
+              </div>
+
             </div>
 
-            <div className="text-right text-gray-400">
+            <div className="rounded-2xl border border-cyan-500/20 bg-[#0b1220] p-5 text-right">
 
-              <div className="flex items-center justify-end gap-2">
-                <Calendar size={18} />
+              <div className="text-sm text-cyan-300">
+                Received
+              </div>
+
+              <div className="mt-2 text-lg font-semibold">
                 {new Date(enquiry.created_at).toLocaleString("en-GB")}
               </div>
 
-            </div>
+              {enquiry.booked_date && (
+                <div className="mt-4 border-t border-cyan-500/20 pt-4">
 
-          </div>
+                  <div className="text-sm text-cyan-300">
+                    Booked for
+                  </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+                  <div className="mt-2 text-lg font-semibold">
+                    {new Date(enquiry.booked_date).toLocaleDateString(
+                      "en-GB",
+                      {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
+                  </div>
 
-            <div className="rounded-2xl bg-[#0b1220] p-6">
+                  {enquiry.booked_time && (
+                    <div className="text-gray-400">
+                      {enquiry.booked_time}
+                    </div>
+                  )}
 
-              <h2 className="mb-6 text-2xl font-bold">
-                Customer Details
-              </h2>
-
-              <div className="space-y-4">
-
-                <a
-                  href={`tel:${enquiry.phone}`}
-                  className="flex items-center gap-3 text-gray-300 hover:text-cyan-400"
-                >
-                  <Phone size={18} />
-                  {enquiry.phone}
-                </a>
-
-                {enquiry.email && (
-                  <a
-                    href={`mailto:${enquiry.email}`}
-                    className="flex items-center gap-3 text-gray-300 hover:text-cyan-400"
-                  >
-                    <Mail size={18} />
-                    {enquiry.email}
-                  </a>
-                )}
-
-                <div className="flex items-center gap-3 text-gray-300">
-                  <Car size={18} />
-                  {enquiry.vehicle}
-                  {enquiry.registration &&
-                    ` (${enquiry.registration})`}
                 </div>
-
-                <div className="flex items-center gap-3 text-gray-300">
-                  <MapPin size={18} />
-                  {enquiry.location}
-                </div>
-
-              </div>
+              )}
 
             </div>
-
-            <div className="rounded-2xl bg-[#0b1220] p-6">
-
-              <h2 className="mb-6 flex items-center gap-2 text-2xl font-bold">
-                <ClipboardList size={22} />
-                Customer Message
-              </h2>
-
-              <p className="whitespace-pre-wrap leading-8 text-gray-300">
-                {enquiry.message}
-              </p>
-
-            </div>
-
-          </div>
-
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-
-            <a
-              href={`tel:${enquiry.phone}`}
-              className="rounded-2xl bg-cyan-500 py-4 text-center font-bold text-black transition hover:bg-cyan-400"
-            >
-              📞 Call Customer
-            </a>
-
-            <a
-              href={`https://wa.me/${enquiry.phone.replace(/\D/g, "")}`}
-              target="_blank"
-              className="rounded-2xl border border-cyan-500 py-4 text-center font-bold text-cyan-300 transition hover:bg-cyan-500/10"
-            >
-              💬 WhatsApp
-            </a>
-
-            {enquiry.email ? (
-              <a
-                href={`mailto:${enquiry.email}`}
-                className="rounded-2xl border border-cyan-500 py-4 text-center font-bold text-cyan-300 transition hover:bg-cyan-500/10"
-              >
-                ✉️ Email
-              </a>
-            ) : (
-              <div className="rounded-2xl border border-gray-700 py-4 text-center text-gray-500">
-                No Email Provided
-              </div>
-            )}
 
           </div>
 
         </div>
+
+        <div className="rounded-3xl border border-cyan-500/20 bg-[#101935] p-6">
+
+          <h2 className="text-2xl font-black">
+            Customer Message
+          </h2>
+
+          <div className="mt-4 rounded-2xl border border-cyan-500/10 bg-[#0b1220] p-5 text-gray-200">
+            {enquiry.message}
+          </div>
+
+        </div>
+
+        <BookingForm enquiry={enquiry} />
 
       </div>
     </main>

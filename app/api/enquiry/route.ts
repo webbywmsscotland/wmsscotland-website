@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
-
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { uploadEnquiryPhotos } from "@/lib/storage";
-import { enquirySchema } from "@/lib/validation";
-import { sendOwnerNotification } from "@/lib/notifications";
 
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    const enquiry = enquirySchema.parse({
+    const enquiry = {
       name: String(formData.get("name") ?? ""),
       phone: String(formData.get("phone") ?? ""),
       email: String(formData.get("email") ?? ""),
@@ -17,17 +13,7 @@ export async function POST(request: Request) {
       registration: String(formData.get("registration") ?? ""),
       location: String(formData.get("location") ?? ""),
       message: String(formData.get("message") ?? ""),
-    });
-
-    const files = formData
-      .getAll("photos")
-      .filter((item): item is File => item instanceof File && item.size > 0);
-
-    let uploadedPhotos: string[] = [];
-
-    if (files.length > 0) {
-      uploadedPhotos = await uploadEnquiryPhotos(files);
-    }
+    };
 
     const { data, error } = await supabaseAdmin
       .from("enquiries")
@@ -39,7 +25,6 @@ export async function POST(request: Request) {
         registration: enquiry.registration,
         location: enquiry.location,
         message: enquiry.message,
-        photos: uploadedPhotos,
         status: "New",
         source: "Website",
       })
@@ -50,8 +35,6 @@ export async function POST(request: Request) {
       throw error;
     }
 
-    await sendOwnerNotification(enquiry);
-
     return NextResponse.json({
       success: true,
       enquiry: data,
@@ -59,16 +42,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
 
-    const message =
-      error instanceof Error ? error.message : "Unable to process enquiry.";
-
     return NextResponse.json(
       {
         success: false,
-        error: message,
+        error: error instanceof Error ? error.message : "Server Error",
       },
       {
-        status: 400,
+        status: 500,
       }
     );
   }
