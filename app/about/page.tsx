@@ -2,12 +2,11 @@ import Container from "../components/ui/Container";
 import SectionHeading from "../components/ui/SectionHeading";
 import CallToAction from "../components/CallToAction";
 import Button from "../components/ui/Button";
-import { Box } from "@/components/ui/box";
 
 export default function AboutPage() {
   return (
     <main className="bg-[#08111F] text-white">
-      <Box className="py-20">
+      <div className="py-20">
         <Container>
           <SectionHeading
             eyebrow="About WMS Scotland"
@@ -16,7 +15,7 @@ export default function AboutPage() {
           />
 
           <div className="mt-12 grid gap-10 lg:grid-cols-2">
-            <div className="space-y-6 text-gray-300 leading-7">
+            <div className="space-y-6 leading-7 text-gray-300">
               <p>
                 I started WMS Scotland to offer a more convenient alternative to
                 traditional garages. Instead of arranging lifts, waiting for
@@ -67,7 +66,7 @@ export default function AboutPage() {
             </div>
           </div>
         </Container>
-      </Box>
+      </div>
 
       <CallToAction />
     </main>
