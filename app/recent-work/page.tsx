@@ -1,71 +1,63 @@
-import Container from "../components/ui/Container";
-import SectionHeading from "../components/ui/SectionHeading";
-import Card from "../components/ui/Card";
-import Button from "../components/ui/Button";
-import recentWork from "../data/recentWork";
+import CallToAction from "../components/CallToAction";
+
+const jobs = [
+  {
+    title: "Brake overhaul on Ford Transit",
+    text: "Front discs, pads and calipers replaced on a customer's work van at their home address in Dunbar.",
+  },
+  {
+    title: "Diagnostic repair on VW Golf",
+    text: "Intermittent running fault traced to a fuel pressure issue and repaired without the vehicle visiting a garage.",
+  },
+  {
+    title: "Agricultural machinery service",
+    text: "Routine servicing and inspection carried out on a compact tractor for a local customer.",
+  },
+];
 
 export default function RecentWorkPage() {
   return (
-    <main className="bg-[#0b1220] py-24 text-white">
-      <Container>
-
-        <SectionHeading
-          title="Recent Work"
-          subtitle="A selection of recent repairs carried out across East Lothian. Every job is completed with the same attention to detail, whether it's routine servicing or complex fault finding."
-        />
-
-        <div className="grid gap-8 lg:grid-cols-2">
-
-          {recentWork.map((job) => (
-            <Card key={job.title}>
-
-              <p className="text-sm uppercase tracking-widest text-cyan-400">
-                {job.vehicle}
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold">
-                {job.title}
-              </h2>
-
-              <p className="mt-6 leading-8 text-gray-300">
-                {job.description}
-              </p>
-
-            </Card>
-          ))}
-
-        </div>
-
-        <div className="mt-20 text-center">
-
-          <h2 className="text-4xl font-black">
-            Need Something Similar?
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
-            Whether it's routine servicing, diagnostics or an unexpected
-            breakdown, WMS Scotland brings professional mechanical repairs
-            directly to your home, workplace or roadside.
+    <main className="bg-[#08111F] text-white">
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
+            Recent Work
           </p>
 
-          <div className="mt-10 flex justify-center gap-4">
+          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+            A few recent jobs completed by WMS Scotland
+          </h1>
 
-            <Button href="/contact">
-              Contact WMS Scotland
-            </Button>
-
-            <Button
-              href="/services"
-              variant="secondary"
-            >
-              View Services
-            </Button>
-
-          </div>
-
+          <p className="mt-6 text-lg leading-8 text-gray-300">
+            From everyday servicing and brake repairs to diagnostics and
+            agricultural work, these are the types of jobs regularly carried out
+            across East Lothian.
+          </p>
         </div>
 
-      </Container>
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {jobs.map((job) => (
+            <article
+              key={job.title}
+              className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6"
+            >
+              <h2 className="text-xl font-bold text-white">{job.title}</h2>
+              <p className="mt-4 leading-7 text-gray-300">{job.text}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black transition hover:bg-cyan-400"
+          >
+            Contact WMS Scotland
+          </a>
+        </div>
+      </div>
+
+      <CallToAction />
     </main>
   );
 }
