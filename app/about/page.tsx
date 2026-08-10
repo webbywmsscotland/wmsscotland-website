@@ -1,6 +1,5 @@
 import Container from "../components/ui/Container";
 import CallToAction from "../components/CallToAction";
-import Button from "../components/ui/Button";
 
 export default function AboutPage() {
   return (
@@ -45,17 +44,12 @@ export default function AboutPage() {
               </p>
 
               <div className="pt-4">
-                <Button
-                  onClickAction={{
-                    "type": "open_url",
-                    "handler": "client",
-                    "payload": {
-                      "url": "https://wmsscotland.com/contact"
-                    }
-                  }}
+                <a
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-5 py-3 font-bold text-black transition hover:bg-cyan-400"
                 >
                   Get In Touch
-                </Button>
+                </a>
               </div>
             </div>
 
