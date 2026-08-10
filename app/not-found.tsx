@@ -1,48 +1,33 @@
-import Button from "./components/ui/Button";
-import Container from "./components/ui/Container";
-
 export default function NotFound() {
   return (
-    <main className="bg-[#0b1220] py-32 text-white">
-      <Container>
+    <main className="flex min-h-screen items-center justify-center bg-[#08111F] px-4 text-white">
+      <div className="max-w-lg text-center">
+        <div className="text-7xl font-black text-cyan-400">404</div>
 
-        <div className="mx-auto max-w-3xl text-center">
+        <h1 className="mt-6 text-3xl font-black">
+          Page not found
+        </h1>
 
-          <div className="text-8xl">
-            🔧
-          </div>
+        <p className="mt-4 text-lg leading-8 text-gray-300">
+          The page you are looking for doesn't exist or may have been moved.
+        </p>
 
-          <h1 className="mt-8 text-6xl font-black">
-            404
-          </h1>
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="/"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black transition hover:bg-cyan-400"
+          >
+            🏠 Back to Home
+          </a>
 
-          <h2 className="mt-6 text-4xl font-bold text-cyan-400">
-            Looks like this engine won't start...
-          </h2>
-
-          <p className="mt-8 text-xl leading-9 text-gray-300">
-            Sorry, we couldn't find the page you were looking for.
-            But don't worry — WMS Scotland is still here to help.
-          </p>
-
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-
-            <Button href="/">
-              🏠 Back to Home
-            </Button>
-
-            <Button
-              href="tel:07523100958"
-              variant="secondary"
-            >
-              📞 Call Now
-            </Button>
-
-          </div>
-
+          <a
+            href="/quote"
+            className="inline-flex items-center justify-center rounded-xl border border-cyan-500 px-6 py-3 font-bold text-cyan-300 transition hover:bg-cyan-500/10"
+          >
+            Request a Quote
+          </a>
         </div>
-
-      </Container>
+      </div>
     </main>
   );
 }
