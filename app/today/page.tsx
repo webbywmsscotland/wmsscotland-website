@@ -1,10 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
-import Link from "next/link";
+import ManualBookingForm from "../components/admin/ManualBookingForm";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+export const dynamic = "force-dynamic";
 
 export default async function TodayPage() {
   const today = new Date().toISOString().split("T")[0];
@@ -12,21 +14,17 @@ export default async function TodayPage() {
   const { data: jobs } = await supabase
     .from("enquiries")
     .select("*")
-    .eq("status", "Booked")
-    .eq("booked_date", today)
-    .order("booked_time", { ascending: true });
+    .eq("booking_date", today)
+    .eq("status", "booked")
+    .order("booking_time", { ascending: true });
 
   return (
-    <main className="min-h-screen bg-[#0b1220] p-4 text-white">
-      <div className="mx-auto max-w-3xl space-y-4">
-
-        <div className="flex items-center justify-between">
+    <main className="min-h-screen bg-[#08111F] text-white">
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-black">
-              Today's Jobs
-            </h1>
-
-            <p className="text-gray-400">
+            <h1 className="text-4xl font-black">Today's Jobs</h1>
+            <p className="mt-2 text-gray-400">
               {new Date().toLocaleDateString("en-GB", {
                 weekday: "long",
                 day: "numeric",
@@ -36,101 +34,98 @@ export default async function TodayPage() {
             </p>
           </div>
 
-          <Link
+          <a
             href="/admin"
-            className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-cyan-300"
+            className="inline-flex items-center justify-center rounded-xl border border-cyan-500 px-4 py-2 font-bold text-cyan-300 hover:bg-cyan-500/10"
           >
-            Admin
-          </Link>
+            ← Back to Dashboard
+          </a>
+        </div>
+
+        <div className="mb-8">
+          <ManualBookingForm />
         </div>
 
         {jobs && jobs.length > 0 ? (
-          jobs.map((job) => (
-            <div
-              key={job.id}
-              className="rounded-3xl border border-cyan-500/20 bg-[#101935] p-5 shadow-lg shadow-cyan-500/5"
-            >
+          <div className="grid gap-6">
+            {jobs.map((job: any) => (
+              <div
+                key={job.id}
+                className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6 shadow-lg"
+              >
+                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm font-bold text-cyan-300">
+                        {job.booking_time || "--:--"}
+                      </div>
+                      <div className="rounded-full bg-green-500/20 px-3 py-1 text-sm font-bold text-green-300">
+                        Booked
+                      </div>
+                    </div>
 
-              <div className="flex items-start justify-between">
+                    <div>
+                      <h2 className="text-2xl font-black text-white">
+                        {job.name}
+                      </h2>
+                      <p className="mt-1 text-gray-400">
+                        {job.vehicle || "Vehicle not specified"}
+                      </p>
+                    </div>
 
-                <div>
+                    <div className="grid gap-2 text-sm text-gray-300 md:grid-cols-2">
+                      <p>📍 {job.location || "No location"}</p>
+                      <p>📞 {job.phone || "No phone"}</p>
+                    </div>
 
-                  <div className="text-cyan-300 font-bold text-sm uppercase tracking-wide">
-                    {job.booked_time || "No time set"}
+                    {job.message && (
+                      <div className="rounded-2xl bg-[#08111F] p-4 text-gray-300">
+                        {job.message}
+                      </div>
+                    )}
                   </div>
 
-                  <h2 className="mt-1 text-2xl font-black">
-                    {job.name}
-                  </h2>
+                  <div className="flex flex-col gap-3 md:min-w-[160px]">
+                    <a
+                      href={`tel:${job.phone}`}
+                      className="rounded-xl bg-cyan-500 px-4 py-3 text-center font-bold text-black hover:bg-cyan-400"
+                    >
+                      Call
+                    </a>
 
-                  <p className="mt-2 text-gray-300">
-                    {job.vehicle}
-                    {job.registration
-                      ? ` (${job.registration})`
-                      : ""}
-                  </p>
+                    <a
+                      href={`https://wa.me/44${job.phone?.replace(/^0/, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-xl border border-cyan-500 px-4 py-3 text-center font-bold text-cyan-300 hover:bg-cyan-500/10"
+                    >
+                      WhatsApp
+                    </a>
 
-                  <p className="text-gray-400">
-                    📍 {job.location}
-                  </p>
-
+                    <a
+                      href={`/admin/enquiries/${job.id}`}
+                      className="rounded-xl border border-white/10 px-4 py-3 text-center font-bold text-gray-200 hover:bg-white/5"
+                    >
+                      View Job
+                    </a>
+                  </div>
                 </div>
-
-                <Link
-                  href={`/admin/enquiries/${job.id}`}
-                  className="rounded-xl border border-cyan-500/30 px-3 py-2 text-sm text-cyan-300"
-                >
-                  Details
-                </Link>
-
               </div>
-
-              <div className="mt-4 rounded-2xl bg-[#0b1220] p-4 text-gray-200">
-                {job.message}
-              </div>
-
-              <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-
-                <a
-                  href={`tel:${job.phone}`}
-                  className="flex items-center justify-center rounded-xl bg-cyan-500 px-4 py-3 font-bold text-black"
-                >
-                  📞 Call
-                </a>
-
-                <a
-                  href={`https://wa.me/${job.phone.replace(/\D/g, "")}`}
-                  target="_blank"
-                  className="flex items-center justify-center rounded-xl border border-cyan-500/30 px-4 py-3 font-bold text-cyan-300"
-                >
-                  💬 WhatsApp
-                </a>
-
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(job.location)}`}
-                  target="_blank"
-                  className="flex items-center justify-center rounded-xl border border-cyan-500/30 px-4 py-3 font-bold text-cyan-300"
-                >
-                  🗺️ Maps
-                </a>
-
-                <Link
-                  href={`/admin/enquiries/${job.id}`}
-                  className="flex items-center justify-center rounded-xl border border-cyan-500/30 px-4 py-3 font-bold text-cyan-300"
-                >
-                  ✔️ Done
-                </Link>
-
-              </div>
-
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          <div className="rounded-3xl border border-cyan-500/20 bg-[#101935] p-8 text-center text-gray-400">
-            No jobs booked for today.
+          <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-12 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-500/10 text-3xl">
+              📅
+            </div>
+            <h2 className="text-2xl font-black text-white">
+              No jobs booked for today
+            </h2>
+            <p className="mt-3 text-gray-400">
+              Add a booking from a call or text using the button above.
+            </p>
           </div>
         )}
-
       </div>
     </main>
   );

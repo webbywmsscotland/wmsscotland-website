@@ -10,10 +10,17 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { error } = await supabase
-      .from("enquiries")
-      .update({ status: body.status })
-      .eq("id", body.id);
+    const { error } = await supabase.from("enquiries").insert({
+      name: body.name,
+      phone: body.phone,
+      vehicle: body.vehicle,
+      location: body.location,
+      message: body.message,
+      booking_date: body.booking_date || null,
+      booking_time: body.booking_time || null,
+      status: "booked",
+      source: "manual",
+    });
 
     if (error) {
       return NextResponse.json(

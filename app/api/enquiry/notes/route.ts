@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabase
       .from("enquiries")
-      .update({ status: body.status })
+      .update({ notes: body.notes })
       .eq("id", body.id);
 
     if (error) {

@@ -1,11 +1,5 @@
+import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import {
-  ClipboardList,
-  Clock,
-  CheckCircle2,
-  CalendarCheck,
-} from "lucide-react";
-
 import EnquiryCard from "../components/admin/EnquiryCard";
 
 const supabase = createClient(
@@ -19,138 +13,103 @@ export default async function AdminPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  const newCount =
-    enquiries?.filter((e) => e.status === "New").length ?? 0;
+  const activeJobs =
+    enquiries?.filter(
+      (e) => e.status !== "completed" && e.status !== "cancelled"
+    ) || [];
 
-  const quotedCount =
-    enquiries?.filter((e) => e.status === "Quoted").length ?? 0;
-
-  const bookedCount =
-    enquiries?.filter((e) => e.status === "Booked").length ?? 0;
-
-  const completedCount =
-    enquiries?.filter((e) => e.status === "Completed").length ?? 0;
+  const historyJobs =
+    enquiries?.filter(
+      (e) => e.status === "completed" || e.status === "cancelled"
+    ) || [];
 
   return (
-    <main className="min-h-screen bg-[#0b1220] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-
-        <h1 className="text-5xl font-black">
-          WMS <span className="text-cyan-400">OS</span>
-        </h1>
-
-        <p className="mt-3 text-lg text-gray-400">
-          Welcome back, Scott 👋
-        </p>
-
-        {/* Dashboard Stats */}
-
-        <div className="mt-10 grid gap-6 md:grid-cols-4">
-
-          <div className="rounded-3xl bg-[#10192d] p-6">
-            <ClipboardList
-              className="mb-4 text-red-400"
-              size={30}
-            />
-
-            <p className="text-gray-400">
-              New
+    <main className="min-h-screen bg-[#08111F] px-4 py-8 text-white">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-4xl font-black">Admin Dashboard</h1>
+            <p className="mt-2 text-gray-400">
+              Manage enquiries, bookings and completed jobs
             </p>
-
-            <h2 className="text-5xl font-black">
-              {newCount}
-            </h2>
-
           </div>
 
-          <div className="rounded-3xl bg-[#10192d] p-6">
+          <div className="flex gap-3">
+            <Link
+              href="/today"
+              className="rounded-xl border border-cyan-500 px-4 py-3 font-semibold text-cyan-400 hover:bg-cyan-500/10"
+            >
+              Today's Jobs
+            </Link>
 
-            <Clock
-              className="mb-4 text-orange-400"
-              size={30}
-            />
-
-            <p className="text-gray-400">
-              Quoted
-            </p>
-
-            <h2 className="text-5xl font-black">
-              {quotedCount}
-            </h2>
-
+            <Link
+              href="/"
+              className="rounded-xl bg-cyan-500 px-4 py-3 font-semibold text-black hover:bg-cyan-400"
+            >
+              View Website
+            </Link>
           </div>
-
-          <div className="rounded-3xl bg-[#10192d] p-6">
-
-            <CalendarCheck
-              className="mb-4 text-green-400"
-              size={30}
-            />
-
-            <p className="text-gray-400">
-              Booked
-            </p>
-
-            <h2 className="text-5xl font-black">
-              {bookedCount}
-            </h2>
-
-          </div>
-
-          <div className="rounded-3xl bg-[#10192d] p-6">
-
-            <CheckCircle2
-              className="mb-4 text-cyan-400"
-              size={30}
-            />
-
-            <p className="text-gray-400">
-              Completed
-            </p>
-
-            <h2 className="text-5xl font-black">
-              {completedCount}
-            </h2>
-
-          </div>
-
         </div>
 
-        {/* Latest Enquiries */}
+        <div className="mb-8 grid gap-4 md:grid-cols-3">
+          <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6">
+            <p className="text-sm text-gray-400">Active Jobs</p>
+            <p className="mt-2 text-3xl font-black text-cyan-400">
+              {activeJobs.length}
+            </p>
+          </div>
 
-        <div className="mt-14">
+          <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6">
+            <p className="text-sm text-gray-400">Completed / Cancelled</p>
+            <p className="mt-2 text-3xl font-black text-cyan-400">
+              {historyJobs.length}
+            </p>
+          </div>
 
-          <h2 className="mb-8 text-3xl font-black">
-            Latest Enquiries
-          </h2>
+          <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6">
+            <p className="text-sm text-gray-400">Total Enquiries</p>
+            <p className="mt-2 text-3xl font-black text-cyan-400">
+              {enquiries?.length || 0}
+            </p>
+          </div>
+        </div>
 
-          <div className="space-y-6">
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-black">Live Jobs</h2>
+            <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-sm text-cyan-300">
+              {activeJobs.length} active
+            </span>
+          </div>
 
-            {enquiries?.length ? (
-              enquiries.map((enquiry) => (
-                <EnquiryCard
-                  key={enquiry.id}
-                  enquiry={enquiry}
-                />
-              ))
-            ) : (
-              <div className="rounded-3xl bg-[#10192d] p-12 text-center">
+          {activeJobs.length === 0 ? (
+            <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-8 text-center text-gray-400">
+              No active jobs.
+            </div>
+          ) : (
+            activeJobs.map((enquiry) => (
+              <EnquiryCard key={enquiry.id} enquiry={enquiry} />
+            ))
+          )}
+        </section>
 
-                <h3 className="text-2xl font-bold">
-                  No enquiries yet
-                </h3>
+        <details className="mt-8 rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6">
+          <summary className="cursor-pointer text-xl font-bold text-white">
+            History (Completed & Cancelled)
+          </summary>
 
-                <p className="mt-3 text-gray-400">
-                  Your first website enquiry will appear here.
-                </p>
-
+          <div className="mt-6 space-y-4">
+            {historyJobs.length === 0 ? (
+              <div className="text-center text-gray-400">
+                No completed or cancelled jobs yet.
               </div>
+            ) : (
+              historyJobs.map((enquiry) => (
+                <EnquiryCard key={enquiry.id} enquiry={enquiry} />
+              ))
             )}
-
           </div>
-
-        </div>
-
+        </details>
       </div>
     </main>
   );
