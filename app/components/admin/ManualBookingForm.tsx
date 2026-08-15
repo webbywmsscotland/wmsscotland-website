@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 
+function getToday() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  const local = new Date(now.getTime() - offset * 60 * 1000);
+  return local.toISOString().split("T")[0];
+}
+
 export default function ManualBookingForm() {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -10,13 +17,41 @@ export default function ManualBookingForm() {
     name: "",
     phone: "",
     vehicle: "",
+    registration: "",
     location: "",
     message: "",
-    booking_date: "",
+    booking_date: getToday(),
     booking_time: "",
   });
 
+  function updateField(field: string, value: string) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  }
+
   async function saveBooking() {
+    if (!form.name.trim()) {
+      alert("Please enter the customer's name.");
+      return;
+    }
+
+    if (!form.phone.trim()) {
+      alert("Please enter a phone number.");
+      return;
+    }
+
+    if (!form.booking_date) {
+      alert("Please choose a booking date.");
+      return;
+    }
+
+    if (!form.booking_time) {
+      alert("Please choose a booking time.");
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -39,7 +74,7 @@ export default function ManualBookingForm() {
         );
       }
     } catch (err: any) {
-      alert("Request failed: " + err.message);
+      alert("Request failed: " + (err.message || "Unknown error"));
     } finally {
       setSaving(false);
     }
@@ -47,84 +82,149 @@ export default function ManualBookingForm() {
 
   return (
     <div className="rounded-3xl border border-cyan-500/20 bg-[#0B1220] p-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-black text-white">Manual Booking</h2>
+          <h2 className="text-2xl font-black text-white">
+            Quick Booking
+          </h2>
+
           <p className="mt-1 text-sm text-gray-400">
-            Add jobs from calls, texts or WhatsApp
+            Add a job from a phone call, text or WhatsApp
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className="rounded-xl bg-cyan-500 px-4 py-2 font-bold text-black hover:bg-cyan-400"
+          className="rounded-xl bg-cyan-500 px-5 py-3 font-bold text-black transition hover:bg-cyan-400"
         >
-          {open ? "Close" : "+ Add Booking"}
+          {open ? "Close" : "+ Quick Booking"}
         </button>
       </div>
 
       {open && (
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <input
-            placeholder="Customer name"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Customer name
+            </label>
 
-          <input
-            placeholder="Phone number"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          />
+            <input
+              type="text"
+              placeholder="Customer name"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.name}
+              onChange={(e) => updateField("name", e.target.value)}
+            />
+          </div>
 
-          <input
-            placeholder="Vehicle"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.vehicle}
-            onChange={(e) => setForm({ ...form, vehicle: e.target.value })}
-          />
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Phone
+            </label>
 
-          <input
-            placeholder="Location"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.location}
-            onChange={(e) => setForm({ ...form, location: e.target.value })}
-          />
+            <input
+              type="tel"
+              placeholder="Phone number"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.phone}
+              onChange={(e) => updateField("phone", e.target.value)}
+            />
+          </div>
 
-          <input
-            type="date"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.booking_date}
-            onChange={(e) =>
-              setForm({ ...form, booking_date: e.target.value })
-            }
-          />
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Vehicle
+            </label>
 
-          <input
-            type="time"
-            className="rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.booking_time}
-            onChange={(e) =>
-              setForm({ ...form, booking_time: e.target.value })
-            }
-          />
+            <input
+              type="text"
+              placeholder="e.g. Ford Transit 2.0 TDCi"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.vehicle}
+              onChange={(e) => updateField("vehicle", e.target.value)}
+            />
+          </div>
 
-          <textarea
-            placeholder="Job details"
-            className="md:col-span-2 min-h-[120px] rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white"
-            value={form.message}
-            onChange={(e) => setForm({ ...form, message: e.target.value })}
-          />
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Registration
+            </label>
 
-          <div className="md:col-span-2 flex justify-end">
+            <input
+              type="text"
+              placeholder="e.g. AB12 CDE"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 uppercase text-white outline-none focus:border-cyan-500"
+              value={form.registration}
+              onChange={(e) =>
+                updateField("registration", e.target.value.toUpperCase())
+              }
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Location
+            </label>
+
+            <input
+              type="text"
+              placeholder="Address / town"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.location}
+              onChange={(e) => updateField("location", e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Date
+            </label>
+
+            <input
+              type="date"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.booking_date}
+              onChange={(e) =>
+                updateField("booking_date", e.target.value)
+              }
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Time
+            </label>
+
+            <input
+              type="time"
+              className="w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.booking_time}
+              onChange={(e) =>
+                updateField("booking_time", e.target.value)
+              }
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="mb-2 block text-sm font-bold text-gray-300">
+              Job details
+            </label>
+
+            <textarea
+              placeholder="What needs doing?"
+              className="min-h-[120px] w-full rounded-xl border border-cyan-500/20 bg-[#08111F] p-3 text-white outline-none focus:border-cyan-500"
+              value={form.message}
+              onChange={(e) => updateField("message", e.target.value)}
+            />
+          </div>
+
+          <div className="flex justify-end md:col-span-2">
             <button
               type="button"
               onClick={saveBooking}
               disabled={saving}
-              className="rounded-xl bg-cyan-500 px-5 py-3 font-bold text-black hover:bg-cyan-400 disabled:opacity-50"
+              className="rounded-xl bg-cyan-500 px-6 py-3 font-bold text-black transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save Booking"}
             </button>
