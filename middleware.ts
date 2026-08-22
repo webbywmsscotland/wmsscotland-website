@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const USERNAME = "webby";
-const PASSWORD = "Bd02wdtdisco!";
+const PASSWORD = "448612";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
